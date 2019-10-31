@@ -197,7 +197,7 @@ describe('webdriver request', () => {
             const req = new WebDriverRequest('POST', '/session')
             req.emit = jest.fn()
 
-            const opts = Object.assign(req.defaultOptions, { uri: { path: '/wd/hub/session/foobar-123/element' } })
+            const opts = Object.assign(req.defaultOptions, { uri: { pathname: '/wd/hub/session/foobar-123/element' } })
             const res = await req._request(opts)
 
             expect(res).toEqual(expectedResponse)
@@ -209,7 +209,7 @@ describe('webdriver request', () => {
             req.emit = jest.fn()
 
             const opts = Object.assign(req.defaultOptions, {
-                uri: { path: '/wd/hub/session/foobar-123/element/some-sub-sub-elem-231/click' }, body: { foo: 'bar' } })
+                uri: { pathname: '/wd/hub/session/foobar-123/element/some-sub-sub-elem-231/click' }, body: { foo: 'bar' } })
 
             const error = await req._request(opts).catch(err => err)
             expect(error.message).toBe('element is not attached to the page document')
@@ -222,7 +222,7 @@ describe('webdriver request', () => {
             const req = new WebDriverRequest('POST', '/session')
             req.emit = jest.fn()
 
-            const opts = Object.assign(req.defaultOptions, { uri: { path: '/wd/hub/empty' } })
+            const opts = Object.assign(req.defaultOptions, { uri: { pathname: '/wd/hub/empty' } })
             await expect(req._request(opts)).rejects.toEqual(new Error('Response has empty body'))
             expect(req.emit.mock.calls).toHaveLength(1)
             expect(warn.mock.calls).toHaveLength(0)
@@ -233,7 +233,7 @@ describe('webdriver request', () => {
             const req = new WebDriverRequest('POST', '/session')
             req.emit = jest.fn()
 
-            const opts = Object.assign(req.defaultOptions, { uri: { path: '/wd/hub/failing' } })
+            const opts = Object.assign(req.defaultOptions, { uri: { pathname: '/wd/hub/failing' } })
             await expect(req._request(opts, 2)).rejects.toEqual(new Error('unknown error'))
             expect(req.emit.mock.calls).toHaveLength(3)
             expect(warn.mock.calls).toHaveLength(2)
@@ -245,7 +245,7 @@ describe('webdriver request', () => {
             req.emit = jest.fn()
 
             got.mockClear()
-            const opts = Object.assign(req.defaultOptions, { uri: { path: '/wd/hub/failing' }, json: { foo: 'bar' } })
+            const opts = Object.assign(req.defaultOptions, { uri: { pathname: '/wd/hub/failing' }, json: { foo: 'bar' } })
             expect(await req._request(opts, 3)).toEqual({ value: 'caught' })
             expect(req.emit.mock.calls).toHaveLength(4)
             expect(logger().warn.mock.calls).toHaveLength(3)
