@@ -232,10 +232,10 @@ const requestMock = jest.fn().mockImplementation((uri, params) => {
             }
         }
 
-        return Promise.resolve({
+        return Promise.reject({
             headers: { foo: 'bar' },
             statusCode: 404,
-            body: error
+            body: JSON.stringify(error)
         }, error)
     }
 
@@ -243,7 +243,7 @@ const requestMock = jest.fn().mockImplementation((uri, params) => {
      * empty response
      */
     if (params.uri.path === '/wd/hub/empty') {
-        return Promise.resolve({
+        return Promise.reject({
             headers: { foo: 'bar' },
             statusCode: 500,
             body: ''
@@ -305,7 +305,7 @@ const requestMock = jest.fn().mockImplementation((uri, params) => {
     return Promise.resolve({
         headers: { foo: 'bar' },
         statusCode,
-        body: JSON.stringify(response)
+        body: typeof response === 'object' ? JSON.stringify(response) : response
     })
 })
 
