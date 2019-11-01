@@ -153,10 +153,7 @@ describe('before', () => {
         expect(service.sessionId).toEqual(12)
         expect(service.failures).toEqual(0)
 
-        expect(service.auth).toEqual({
-            user: 'blah',
-            pass: 'NotSetKey'
-        })
+        expect(service.auth).toEqual('blah:NotSetKey')
         service = new BrowserstackService({ capabilities: {} })
         service.beforeSession({ key: 'blah' })
         await service.before()
